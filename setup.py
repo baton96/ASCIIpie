@@ -14,7 +14,7 @@ setuptools.setup(
     author='Bartosz Paulewicz',
     author_email='podolce0@gmail.com',
     url='https://gitlab.com/baton96/ASCIIpy',
-    download_url='https://gitlab.com/baton96/ASCIIpy/-/archive/0.1/ASCIIpy-0.1.1.tar.gz',
+    download_url='https://gitlab.com/baton96/ASCIIpy/-/archive/0.1.1/ASCIIpy-0.1.1.tar.gz',
     keywords=['ASCII', 'art'],
     classifiers=[
         'Development Status :: 3 - Alpha',
