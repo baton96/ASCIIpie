@@ -4,9 +4,9 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='ASCIIpy',
-    packages=['ASCIIpy'],
-    version='0.1',
+    name='ASCIIpie',
+    packages=['ASCIIpie'],
+    version='0.1.1',
     license='MIT',
     description='Python tool that converts images to ASCII art',
     long_description=long_description,
@@ -14,7 +14,7 @@ setuptools.setup(
     author='Bartosz Paulewicz',
     author_email='podolce0@gmail.com',
     url='https://gitlab.com/baton96/ASCIIpy',
-    download_url='https://gitlab.com/baton96/polon/-/archive/0.1.1/polon-0.1.tar.gz',
+    download_url='https://gitlab.com/baton96/ASCIIpy/-/archive/0.1/ASCIIpy-0.1.1.tar.gz',
     keywords=['ASCII', 'art'],
     classifiers=[
         'Development Status :: 3 - Alpha',
