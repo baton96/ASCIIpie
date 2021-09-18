@@ -11,30 +11,39 @@ def weighted_chars():
     return np.asarray([v[0] for v in weights.values()])
 
 
-def asciipie(input_file, output_file='output.png'):
+def asciipie(input_file, output_file=None, keep_color=True, output_format='png'):
     # Load Font
     font = ImageFont.load_default()
     char_width, char_height = font.getsize('A')
     ratio = char_height / char_width
 
-    # Load Image
-    img = Image.open(input_file).convert('L')
+    # Prepare Image
+    img = Image.open(input_file)
     img_width, img_height = img.size
-    size = (img_width, int(img_height / ratio))
-    img = np.array(img.resize(size))
+    new_size = (img_width, int(img_height / ratio))
+    img = img.resize(new_size)
+    grayscale = np.array(img.convert('L'))
 
     # Image -> ASCII
     chars = np.asarray(list(' .,-;*?vIJV7&%#A@80$'))
-    normalized_img = (img - img.min()) / (img.max() - img.min())
+    normalized_img = (grayscale - grayscale.min()) / (grayscale.max() - grayscale.min())
     stretched_img = normalized_img * (chars.size - 1)
     img_mask = stretched_img.astype(int)
     lines = [''.join(r) for r in chars[img_mask]]
 
     # ASCII -> Image
-    image_height = int(char_height * len(lines))
-    image_width = font.getsize(lines[0])[0]
-    image = Image.new('L', (image_width, image_height), 0)
-    draw = ImageDraw.Draw(image)
-    for i, line in enumerate(lines):
-        draw.text((0, char_height * i), line, 255)
-    image.save(output_file)
+    new_height = int(char_height * len(lines))
+    new_width = font.getsize(lines[0])[0]
+    new_size = (new_width, new_height)
+    mode = 'RGB' if keep_color else 'L'
+    output = Image.new(mode, new_size, 0)
+    draw = ImageDraw.Draw(output)
+    if keep_color:
+        color = np.array(img.convert('RGB'))
+        for (i, j) in np.ndindex(color.shape[:2]):
+            draw.text((char_width * j, char_height * i), lines[i][j], '#%02x%02x%02x' % tuple(color[(i, j)]))
+    else:
+        for i, line in enumerate(lines):
+            draw.text((0, char_height * i), line, 255)
+    output_file = output_file or 'output.png'
+    output.save(output_file)
