@@ -17,7 +17,6 @@ def main():
 
     argparser.add_argument('-o',
                            '--output',
-                           default='output.png',
                            help='output file path')
 
     args = argparser.parse_args()

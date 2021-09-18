@@ -20,7 +20,12 @@ def asciipie(input_file, output_file=None, keep_color=True, output_format='png')
     # Prepare Image
     img = Image.open(input_file)
     img_width, img_height = img.size
-    new_size = (img_width, int(img_height / ratio))
+    if output_format == 'txt':
+        chars_per_line = 160
+        new_height = int((chars_per_line * img_height) / (ratio * img_width))
+        new_size = (chars_per_line, new_height)
+    else:
+        new_size = (img_width, int(img_height / ratio))
     img = img.resize(new_size)
     grayscale = np.array(img.convert('L'))
 
@@ -30,6 +35,11 @@ def asciipie(input_file, output_file=None, keep_color=True, output_format='png')
     stretched_img = normalized_img * (chars.size - 1)
     img_mask = stretched_img.astype(int)
     lines = [''.join(r) for r in chars[img_mask]]
+    if output_format == 'txt':
+        output_file = output_file or 'output.txt'
+        with open(output_file, 'w') as f:
+            f.write('\n'.join(lines))
+        return
 
     # ASCII -> Image
     new_height = int(char_height * len(lines))
