@@ -11,7 +11,7 @@ def weighted_chars():
     return np.asarray([v[0] for v in weights.values()])
 
 
-def asciipie(input_file, output_file=None, keep_color=True, output_format='png'):
+def asciipie(input_file, output_file=None, keep_color=True, text_mode=False):
     # Load Font
     font = ImageFont.load_default()
     char_width, char_height = font.getsize('A')
@@ -20,7 +20,7 @@ def asciipie(input_file, output_file=None, keep_color=True, output_format='png')
     # Prepare Image
     img = Image.open(input_file)
     img_width, img_height = img.size
-    if output_format == 'txt':
+    if text_mode:
         chars_per_line = 160
         new_height = int((chars_per_line * img_height) / (ratio * img_width))
         new_size = (chars_per_line, new_height)
@@ -35,7 +35,9 @@ def asciipie(input_file, output_file=None, keep_color=True, output_format='png')
     stretched_img = normalized_img * (chars.size - 1)
     img_mask = stretched_img.astype(int)
     lines = [''.join(r) for r in chars[img_mask]]
-    if output_format == 'txt':
+
+    # Text output
+    if text_mode:
         output_file = output_file or 'output.txt'
         with open(output_file, 'w') as f:
             f.write('\n'.join(lines))
