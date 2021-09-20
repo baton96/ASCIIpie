@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 from collections import defaultdict
+
 import numpy as np
 
 
@@ -20,12 +21,12 @@ def asciipie(input_file, output_file=None, keep_color=True, text_mode=False):
     # Prepare Image
     img = Image.open(input_file)
     img_width, img_height = img.size
+    new_width = img_width / char_width
     if text_mode:
-        chars_per_line = 160
-        new_height = int((chars_per_line * img_height) / (ratio * img_width))
-        new_size = (chars_per_line, new_height)
-    else:
-        new_size = (img_width, int(img_height / ratio))
+        new_width = 160
+    new_height = (new_width * img_height) / (ratio * img_width)
+    new_width, new_height = int(new_width), int(new_height)
+    new_size = (new_width, new_height)
     img = img.resize(new_size)
     grayscale = np.array(img.convert('L'))
 
