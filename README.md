@@ -1,6 +1,6 @@
 <img alt="art" src="https://gozych.edu.pl/wp-content/uploads/2017/07/ascii_art.jpg">
 
-# ASCIIpie 🥧
+# 🥧 ASCIIpie 🥧
 
 ASCIIpie is a Python tool that converts images to ASCII art
 
