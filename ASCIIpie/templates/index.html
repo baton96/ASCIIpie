@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ASCIIpie</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='pie.png') }}"/>
+    <style>
+        html, body {
+            font-family: 'Courier New', monospace;
+            color-scheme: dark;
+            text-align: center;
+            height: 100%;
+            margin: 0;
+        }
+        .upload-div {
+            border: 1px gray dashed;
+            border-radius: 20px;
+            position: relative;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 20px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>🥧 ASCIIpie 🥧</h1>
+    <label for="file">
+        <div class="upload-div">
+            <span>Upload your file here</span>
+        </div>
+    </label>
+    <div style="width: 75vw; margin: auto;">
+        <img id="img" style="max-width: 100%">
+    </div>
+    <form id="upload" method="POST" action="/upload" enctype="multipart/form-data" hidden>
+        <input type="file" name="file" id="file">
+    </form>
+<script>
+    const form = document.getElementById("upload");
+    const file = document.getElementById("file");
+    const img = document.getElementById("img");
+    form.onchange = function() {
+        const formData = new FormData();
+        formData.append('file', file.files[0]);
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.blob())
+          .then(imageBlob => {
+              const imageObjectURL = URL.createObjectURL(imageBlob);
+              img.src = imageObjectURL;
+          });
+    };
+</script>
+</body>
+</html>

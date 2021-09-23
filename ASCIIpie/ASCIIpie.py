@@ -1,6 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
 from collections import defaultdict
-
 import numpy as np
 
 
@@ -12,7 +11,7 @@ def weighted_chars():
     return np.asarray([v[0] for v in weights.values()])
 
 
-def asciipie(input_file, output_file=None, keep_color=True, text_mode=False):
+def asciipie(input_file, output_file=None, keep_color=True, text_mode=False, save=True):
     # Load Font
     font = ImageFont.load_default()
     char_width, char_height = font.getsize('A')
@@ -59,4 +58,6 @@ def asciipie(input_file, output_file=None, keep_color=True, text_mode=False):
         for i, line in enumerate(lines):
             draw.text((0, char_height * i), line, 255)
     output_file = output_file or 'output.png'
-    output.save(output_file)
+    if save:
+        output.save(output_file)
+    return output
