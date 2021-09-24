@@ -11,7 +11,7 @@ def weighted_chars():
     return np.asarray([v[0] for v in weights.values()])
 
 
-def asciipie(input_file, output_file=None, keep_color=True, text_mode=False, save=True):
+def asciipie(input_file, output_file=None, text_mode=False, save=True):
     # Load Font
     font = ImageFont.load_default()
     char_width, char_height = font.getsize('A')
@@ -38,26 +38,30 @@ def asciipie(input_file, output_file=None, keep_color=True, text_mode=False, sav
 
     # Text output
     if text_mode:
-        output_file = output_file or 'output.txt'
-        with open(output_file, 'w') as f:
-            f.write('\n'.join(lines))
-        return
+        text = '\n'.join(lines)
+        if save:
+            output_file = output_file or 'output.txt'
+            with open(output_file, 'w') as f:
+                f.write(text)
+        return text
 
     # ASCII -> Image
     new_height = int(char_height * len(lines))
     new_width = font.getsize(lines[0])[0]
     new_size = (new_width, new_height)
-    mode = 'RGB' if keep_color else 'L'
-    output = Image.new(mode, new_size, 0)
+    output = Image.new('RGB', new_size, 0)
     draw = ImageDraw.Draw(output)
-    if keep_color:
-        color = np.array(img.convert('RGB'))
-        for (i, j) in np.ndindex(color.shape[:2]):
-            draw.text((char_width * j, char_height * i), lines[i][j], '#%02x%02x%02x' % tuple(color[(i, j)]))
-    else:
-        for i, line in enumerate(lines):
-            draw.text((0, char_height * i), line, 255)
-    output_file = output_file or 'output.png'
+    color = np.array(img.convert('RGB'))
+    for (i, j) in np.ndindex(color.shape[:2]):
+        draw.text(
+            xy=(char_width * j, char_height * i),
+            text=lines[i][j],
+            fill='#%02x%02x%02x' % tuple(color[(i, j)])
+        )
+    # Black and white version
+    # for i, line in enumerate(lines):
+    #     draw.text((0, char_height * i), line, 255)
     if save:
+        output_file = output_file or 'output.png'
         output.save(output_file)
     return output
