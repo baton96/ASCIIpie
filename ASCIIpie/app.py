@@ -14,7 +14,10 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload():
     file = request.files['file']
-    asciipied = asciipie(file, save=False)
+    return_text = (request.args.get('type') == 'text')
+    asciipied = asciipie(file, save=False, text_mode=return_text)
+    if return_text:
+        return asciipied
     buffer = BytesIO()
     asciipied.save(buffer, 'PNG')
     buffer.seek(0)

@@ -11,47 +11,116 @@
             text-align: center;
             height: 100%;
             margin: 0;
+            padding: 0;
         }
-        .upload-div {
+        h1 {
+            padding-top: 0.67em;
+            margin: 0;
+        }
+        button {
+            font-size: 16px;
+        }
+        #btn-image {
+            background-color: #0080FF;
+            border: 2px solid #0080FF;
+        }
+        #upload-div {
             border: 1px gray dashed;
             border-radius: 20px;
-            position: relative;
             width: fit-content;
             margin: 20px auto;
             padding: 20px;
             color: gray;
+        }
+        #upload-div img {
+            max-height: 50vh;
         }
     </style>
 </head>
 <body>
     <h1>🥧 ASCIIpie 🥧</h1>
     <label for="file">
-        <div class="upload-div">
-            <span>Upload your file here</span>
+        <div id="upload-div">
+            Upload your file here
         </div>
     </label>
-    <div style="width: 75vw; margin: auto;">
-        <img id="img" style="max-width: 100%">
+    <div style="padding-bottom: 20px">
+        <button id="btn-text">
+            Text
+        </button>
+        <button id="btn-image">
+            Image
+        </button>
     </div>
+    <span>
+        <img id="img" style="max-width: 95vw">
+        <textarea
+                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                style="display: none; resize: none; overflow: hidden;"
+                id="textarea" cols="158" readonly
+        ></textarea>
+    </span>
+
     <form id="upload" method="POST" action="/upload" enctype="multipart/form-data" hidden>
         <input type="file" name="file" id="file">
     </form>
 <script>
-    const form = document.getElementById("upload");
+    const textareaBtn = document.getElementById("btn-text");
+    const imgBtn = document.getElementById("btn-image");
+
+    const uploadDiv = document.getElementById("upload-div");
+    const textarea = document.getElementById("textarea");
     const file = document.getElementById("file");
     const img = document.getElementById("img");
-    form.onchange = function() {
+
+    textareaBtn.onclick = () => { asciipie('text') };
+    imgBtn.onclick = () => { asciipie('img') };
+
+    img.onload = () => {
+        img.scrollIntoView({ behavior: 'smooth'});
+        textarea.style.display = "none";
+    }
+
+    file.onchange = () => {
+        const file_to_upload = file.files[0];
+        if(!file_to_upload) return;
+
+        const uploadImg = document.createElement("img");
+        uploadImg.src = URL.createObjectURL(file_to_upload);
+        uploadDiv.replaceChildren(uploadImg);
+        img.style.display = "none";
+    }
+
+    function asciipie(type) {
+        const file_to_upload = file.files[0];
+        if(!file_to_upload) return;
+
         const formData = new FormData();
-        formData.append('file', file.files[0]);
-        fetch('/upload', {
+        formData.append('file', file_to_upload);
+        fetch('/upload?type=' + type, {
             method: 'POST',
             body: formData
-        }).then(response => response.blob())
-          .then(imageBlob => {
-              const imageObjectURL = URL.createObjectURL(imageBlob);
-              img.src = imageObjectURL;
-          });
-    };
+        }).then(response => {
+            if(type === 'img') {
+                return response.blob();
+            }
+            else {
+                img.style.display = "none";
+                return response.text();
+            }
+        }).then(response => {
+            if(type === 'img') {
+                img.src = URL.createObjectURL(response);
+                img.style.display = "inline";
+            }
+            else {
+                textarea.textContent = response;
+                textarea.style.display = "inline";
+                textarea.style.height = (textarea.scrollHeight) + "px";
+                textarea.scrollIntoView({ behavior: 'smooth'});
+            }
+        });
+    }
 </script>
 </body>
 </html>
