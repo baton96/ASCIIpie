@@ -43,6 +43,8 @@ optional arguments:
 ```
 
 ## Example
+![](ASCIIpie/static/pie.png)
+![](ASCIIpie/static/asciipied.png)
 
 ## License
 

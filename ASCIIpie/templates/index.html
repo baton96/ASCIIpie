@@ -35,9 +35,23 @@
         #upload-div img {
             max-height: 50vh;
         }
+        .img-span {
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+            overflow: hidden;
+            padding: 20px;
+            top: 20px;
+        }
     </style>
 </head>
 <body>
+    <span class="img-span" style="left: 20px;">
+        <img src="{{ url_for('static', filename='pie.png') }}" alt=""/>
+    </span>
+    <span class="img-span" style="right: 20px;">
+        <img src="{{ url_for('static', filename='asciipied.png') }}" alt=""/>
+    </span>
     <h1>🥧 ASCIIpie 🥧</h1>
     <label for="file">
         <div id="upload-div">
@@ -53,12 +67,14 @@
         </button>
     </div>
     <span>
-        <img id="img" style="max-width: 95vw">
-        <textarea
+        <img id="img" style="max-width: 95vw" alt="" src="">
+        <label for="textarea">
+            <textarea
                 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                 style="display: none; resize: none; overflow: hidden;"
                 id="textarea" cols="158" readonly
-        ></textarea>
+            ></textarea>
+        </label>
     </span>
 
     <form id="upload" method="POST" action="/upload" enctype="multipart/form-data" hidden>
