@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_file
+from flask import Flask, request, render_template, send_file  # make_response
 from ASCIIpie import asciipie
 from io import BytesIO
 
@@ -18,6 +18,7 @@ def upload():
     asciipied = asciipie(file, save=False, text_mode=return_text)
     if return_text:
         return asciipied
+    # return make_response(asciipied.tobytes())
     buffer = BytesIO()
     asciipied.save(buffer, 'PNG')
     buffer.seek(0)

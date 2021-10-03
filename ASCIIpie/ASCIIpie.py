@@ -1,14 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
-from collections import defaultdict
 import numpy as np
-
-
-def weighted_chars():
-    font = ImageFont.load_default()
-    weights = defaultdict(list)
-    for i in range(32, 127):
-        weights[np.mean(font.getmask(chr(i)))] += [chr(i)]
-    return np.asarray([v[0] for v in weights.values()])
 
 
 def asciipie(input_file, output_file=None, text_mode=False, save=True):
@@ -58,9 +49,6 @@ def asciipie(input_file, output_file=None, text_mode=False, save=True):
             text=lines[i][j],
             fill='#%02x%02x%02x' % tuple(color[(i, j)])
         )
-    # Black and white version
-    # for i, line in enumerate(lines):
-    #     draw.text((0, char_height * i), line, 255)
     if save:
         output_file = output_file or 'output.png'
         output.save(output_file)
