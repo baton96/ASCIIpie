@@ -1,4 +1,4 @@
-from ASCIIpie import asciipie
+from ASCIIpie import asciipie_file
 import argparse
 import sys
 import os
@@ -14,24 +14,15 @@ def main():
                            '--output',
                            help='output file path')
 
-    argparser.add_argument('-t',
-                           '--text',
-                           default=False,
-                           action='store_true',
-                           help='output to text file')
-
     args = argparser.parse_args()
     output_path = args.output
     input_path = args.path
-    text_mode = args.text
     if not os.path.isfile(input_path):
         print('This file doesn\'t exist')
         sys.exit()
-    asciipie(
+    asciipie_file(
         input_file=input_path,
-        output_file=output_path,
-        text_mode=text_mode,
-        save=True
+        output_file=output_path
     )
 
 
