@@ -5,7 +5,7 @@ import cv2
 def asciipie(input_file, output_file=None, text_mode=False, save=True):
     # Load Font
     font = cv2.FONT_HERSHEY_PLAIN
-    (char_width, char_height), char_baseline = cv2.getTextSize(text='x', fontFace=font, fontScale=1, thickness=1)
+    (char_width, char_height), char_baseline = cv2.getTextSize(text='$', fontFace=font, fontScale=1, thickness=1)
     ratio = char_height / char_width
 
     # Prepare Image
