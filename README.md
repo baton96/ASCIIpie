@@ -17,16 +17,14 @@ from ASCIIpie import asciipie
 
 asciipie(
     input_file='input.jpg',
-    output_file='output.jpg',
-    keep_color=True,
-    text_mode=False
+    output_file='output.jpg'
 )
 ```
 
 ### CLI
 
 ```
-ASCIIpie [-h] [-o OUTPUT] [-g] [-t] path
+ASCIIpie [-h | path] [-o OUTPUT]
 
 Convert images to ASCII art
 
@@ -37,9 +35,6 @@ optional arguments:
   -h, --help            show this help message and exit
   -o OUTPUT, --output OUTPUT
                         output file path
-  -g, --grayscale       use grayscale
-  -t, --text            output to text file
-
 ```
 
 ## Example
