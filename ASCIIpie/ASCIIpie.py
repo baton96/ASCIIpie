@@ -47,11 +47,11 @@ def asciipie(img):
     # ASCII -> Image
     new_height = int((char_height + char_baseline // 2) * len(lines))
     new_width = char_width * len(lines[0])
-    new_size = (new_height, new_width, 3)
+    new_size = (new_height, new_width, 4)
     output = np.zeros(new_size, dtype=np.uint8)
     for (i, j) in np.ndindex(img.shape[:2]):
         r, g, b = img[(i, j)]
-        color = (int(r), int(g), int(b))
+        color = (int(r), int(g), int(b), 255)
         output = cv2.putText(
             img=output,
             text=lines[i][j],
