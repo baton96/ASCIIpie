@@ -4,46 +4,7 @@
     <meta charset="UTF-8">
     <title>ASCIIpie</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='pie.png') }}"/>
-    <style>
-        html, body {
-            font-family: 'Courier New', monospace;
-            color-scheme: dark;
-            text-align: center;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            padding-top: 0.67em;
-            margin: 0;
-        }
-        button {
-            font-size: 16px;
-        }
-        #btn-image {
-            background-color: #0080FF;
-            border: 2px solid #0080FF;
-        }
-        #upload-div {
-            border: 1px gray dashed;
-            border-radius: 20px;
-            width: fit-content;
-            margin: 20px auto;
-            padding: 20px;
-            color: gray;
-        }
-        #upload-div img {
-            max-height: 50vh;
-        }
-        .img-span {
-            background-color: black;
-            border-radius: 50%;
-            position: absolute;
-            overflow: hidden;
-            padding: 20px;
-            top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
 </head>
 <body>
     <span class="img-span" style="left: 20px;">
@@ -63,7 +24,7 @@
             Text
         </button>
         <button id="btn-image">
-            Image
+            ASCIIpie
         </button>
     </div>
     <span>
@@ -80,63 +41,6 @@
     <form id="upload" method="POST" action="/upload" enctype="multipart/form-data" hidden>
         <input type="file" name="file" id="file">
     </form>
-<script>
-    const textareaBtn = document.getElementById("btn-text");
-    const imgBtn = document.getElementById("btn-image");
-
-    const uploadDiv = document.getElementById("upload-div");
-    const textarea = document.getElementById("textarea");
-    const file = document.getElementById("file");
-    const img = document.getElementById("img");
-
-    textareaBtn.onclick = () => { asciipie('text') };
-    imgBtn.onclick = () => { asciipie('img') };
-
-    img.onload = () => {
-        img.scrollIntoView({ behavior: 'smooth'});
-        textarea.style.display = "none";
-    }
-
-    file.onchange = () => {
-        const file_to_upload = file.files[0];
-        if(!file_to_upload) return;
-
-        const uploadImg = document.createElement("img");
-        uploadImg.src = URL.createObjectURL(file_to_upload);
-        uploadDiv.replaceChildren(uploadImg);
-        img.style.display = "none";
-    }
-
-    function asciipie(type) {
-        const file_to_upload = file.files[0];
-        if(!file_to_upload) return;
-
-        const formData = new FormData();
-        formData.append('file', file_to_upload);
-        fetch('/upload?type=' + type, {
-            method: 'POST',
-            body: formData
-        }).then(response => {
-            if(type === 'img') {
-                return response.blob();
-            }
-            else {
-                img.style.display = "none";
-                return response.text();
-            }
-        }).then(response => {
-            if(type === 'img') {
-                img.src = URL.createObjectURL(response);
-                img.style.display = "inline";
-            }
-            else {
-                textarea.textContent = response;
-                textarea.style.display = "inline";
-                textarea.style.height = (textarea.scrollHeight) + "px";
-                textarea.scrollIntoView({ behavior: 'smooth'});
-            }
-        });
-    }
-</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
